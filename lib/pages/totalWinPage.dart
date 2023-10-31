@@ -19,27 +19,23 @@ class _TotalWinState extends State<TotalWin> {
  final _myBox = Hive.box('TicketsBox');
  //Ticket ticket = Ticket();
 List<TicketDetail> ticketdetail=[];
-Total recentTotal=Total();
+Total total=Total();
 
  int? trueTicketNum;
 @override
  void initState() {
 //_myBox.clear();
-    // if this is the 1st time ever openin the app, then create default data
-    if (_myBox.get("totalwin")==null) {
+//_myBox.delete("winTotal");
+    if (_myBox.get("winTickets")==null) {
    ticketdetail = [TicketDetail(ticketID: Provider.of<PassData>(context,listen: false).ticketID.toString(),username:"", date: "-",box_num: "0", win_place: "-", deposit: "0", odd: "0", winned_money: "0")];
-   trueTicketNum=1;
-   //_myBox.put("newTicket",ticketdetail);
     } else {
-      // there already exists data
-  ticketdetail=_myBox.get("totalwin").cast<TicketDetail>() ;
-   trueTicketNum=ticketdetail.length;
-                                  print(ticketdetail.length);
+
+  ticketdetail=_myBox.get("winTickets").cast<TicketDetail>() ;
     }
-    if (_myBox.get("newTotal")==null) {
-  recentTotal.recentTotal=0.toString();}
+    if (_myBox.get("winTotal")==null) {
+  total.winTotal=0.toString();}
   else{
- recentTotal.recentTotal= _myBox.get("newTotal");
+ total.winTotal= _myBox.get("winTotal");
 }
 
     super.initState();
@@ -366,7 +362,28 @@ Total recentTotal=Total();
                         ),
                         const SizedBox(width: 10,),
                         Text(
-                          recentTotal.recentTotal.toString()+ "birr",
+                          total.winTotal.toString()+ "birr",
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        const Text(
+                          "Net",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(width: 10,),
+                        Text(
+                          Provider.of<PassData>(context,listen: true).net.toString()+ "birr",
                           style: const TextStyle(
                             color: Colors.black,
                             fontSize: 20,

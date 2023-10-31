@@ -278,12 +278,10 @@ String dateGenerator() {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                  if(box_num1!=box_num2&&box_num1!=box_num3&&box_num2!=box_num3){
-                    Provider.of<PassData>(context,listen: false).setNewGameStatus(true);
+                   
                         Provider.of<PassData>(context,listen: false).filterWin(box_num1, box_num2,box_num3 ,Provider.of<PassData>(context,listen: false).ticketID);
                       // Provider.of<PassData>(context,listen: false).totalWin();
-                         box_num1=1;
-                   box_num2=2;
-                   box_num3=3;
+                     
                     Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => OddPage()));
@@ -295,17 +293,8 @@ String dateGenerator() {
                  }else{
           Provider.of<PassData>(context,listen:false).errormessage("Same box number is not allowed");
                  }
-                         //           Navigator.push(
-                 // context,
-                 // MaterialPageRoute(builder: (context) =>  FinalPrint(date: "${yearGenerator()}/${monthGenerator()}/${dateGenerator()}",deposit: deposit_controller.text,
-                  // netDeposit: Provider.of<PassData>(context as BuildContext,listen: true).netdeposit.toString(),
-                  // boxNumber: Provider.of<PassData>(context as BuildContext,listen: true).button_number.toString(),new_data:idGenerator(),
-                  // odd: Provider.of<PassData>(context as BuildContext,listen: true).button_odd.toString(),
-                  // win_place:  Provider.of<PassData>(context as BuildContext,listen: true).button_win_place.toString(),
-                  // winned_money: Provider.of<PassData>(context as BuildContext,listen: false).fixed_winned_money.toString(),
-                  // username: Provider.of<PassData>(context as BuildContext,listen: false).username.toString(), )));
                  
-                  
+                   Provider.of<PassData>(context,listen: false).ticketID=(double.parse(Provider.of<PassData>(context,listen: false).ticketID) + 1).toString();
                  } },
               style: ElevatedButton.styleFrom(backgroundColor: Color.fromRGBO(143, 25, 96, 1),),
                 

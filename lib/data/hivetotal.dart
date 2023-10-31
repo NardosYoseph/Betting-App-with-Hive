@@ -7,4 +7,8 @@ part 'hivetotal.g.dart';
 class Total extends HiveObject{
    @HiveField(2,defaultValue: "")
   String? recentTotal;
+    @HiveField(27,defaultValue: "")
+  String? todayTotal;
+   @HiveField(28,defaultValue: "")
+  String? winTotal;
 }

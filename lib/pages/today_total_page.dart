@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:mydesktop2/data/hivemodel.dart';
+import 'package:mydesktop2/data/hivetotal.dart';
 import 'package:mydesktop2/widgets/pass_data.dart';
 import 'package:mydesktop2/widgets/sider_menu.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +18,8 @@ class TodayTotal extends StatefulWidget {
 List<TicketDetail> ticketdetail=[];
 List<TicketDetail> todayTicket= [];
 
- int? trueTicketNum;
+Total total=Total();
+
 
 class _TodayTotalState extends State<TodayTotal> {
  //final _myBox = Hive.box('TicketDetailBox');
@@ -26,23 +28,19 @@ class _TodayTotalState extends State<TodayTotal> {
 @override
  void initState() {
 
-    if (_myBox.get("todayTicket")==null) {
-   ticketdetail = [TicketDetail(ticketID: Provider.of<PassData>(context,listen: false).ticketID.toString(),username: "" ,date: "-",box_num: "0", win_place: "-", deposit: "0", odd: "0", winned_money: "0")];
-   trueTicketNum=0;
-
-   //_myBox.get("newTickets");
-
-   //_myBox.put("newTicket",ticketdetail);
+    if (_myBox.get("newTickets")==null) {
+   todayTicket = [TicketDetail(ticketID: Provider.of<PassData>(context,listen: false).ticketID.toString(),username: "" ,date: "-",box_num: "0", win_place: "-", deposit: "0", odd: "0", winned_money: "0")];
     } else {
 //_myBox.clear();
-      // there already exists data
-  ticketdetail=_myBox.get("todayTicket").cast<TicketDetail>() ;
+  ticketdetail=_myBox.get("newTickets").cast<TicketDetail>() ;
   todayTicket=ticketdetail.where((ticket) => ticket.date.contains("${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().day}")).toList();
+ }  
  
-
-  
-    }
-    
+    if (_myBox.get("todayTotal")==null) {
+  total.todayTotal=0.toString();}
+  else{
+ total.todayTotal= _myBox.get("todayTotal");
+}
 
   
 
@@ -215,7 +213,7 @@ class _TodayTotalState extends State<TodayTotal> {
                       child: ListView.builder(
                         
                         scrollDirection: Axis.vertical,
-                        itemCount:ticketdetail
+                        itemCount:todayTicket
                             .length,
                         itemBuilder: (context, index) => SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
@@ -224,7 +222,7 @@ class _TodayTotalState extends State<TodayTotal> {
                               SizedBox(
                                 width: 90,
                                 child: Text(
-                             ticketdetail[index].username,
+                             todayTicket[index].username,
                                   style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 16,
@@ -237,7 +235,7 @@ class _TodayTotalState extends State<TodayTotal> {
                                SizedBox(
                                 width: 90,
                                 child: Text(
-                                ticketdetail[index].date,
+                                todayTicket[index].date,
                                   style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 16,
@@ -250,7 +248,7 @@ class _TodayTotalState extends State<TodayTotal> {
                               SizedBox(
                                 width: 20,
                                 child: Text(
-                                 ticketdetail[index]
+                                 todayTicket[index]
                                       .box_num,
                                   style: const TextStyle(
                                     color: Colors.black,
@@ -264,7 +262,7 @@ class _TodayTotalState extends State<TodayTotal> {
                               SizedBox(
                                 width: 40,
                                 child: Text(
-                                ticketdetail[index]
+                                todayTicket[index]
                                       .win_place,
                                   style: const TextStyle(
                                     color: Colors.black,
@@ -278,7 +276,7 @@ class _TodayTotalState extends State<TodayTotal> {
                               SizedBox(
                                 width: 70,
                                 child: Text(
-                               ticketdetail[index]
+                               todayTicket[index]
                                       .odd,
                                   style: const TextStyle(
                                     color: Colors.black,
@@ -292,7 +290,7 @@ class _TodayTotalState extends State<TodayTotal> {
                               SizedBox(
                                 width: 70,
                                 child: Text(
-                                  "${ticketdetail[index]
+                                  "${todayTicket[index]
                                           .deposit} birr",
                                   style: const TextStyle(
                                     color: Colors.black,
@@ -306,7 +304,7 @@ class _TodayTotalState extends State<TodayTotal> {
                               SizedBox(
                                 width: 150,
                                 child: Text(
-                                 "${ticketdetail[index]
+                                 "${todayTicket[index]
                                           .winned_money} birr",
                                   style: const TextStyle(
                                     color: Colors.black,
@@ -348,8 +346,8 @@ class _TodayTotalState extends State<TodayTotal> {
                         ),
                         const SizedBox(width: 10,),
                         Text(
-                          (ticketdetail
-                            .length).toString(),
+                          (todayTicket
+                            .length-1).toString(),
                           style: const TextStyle(
                             color: Colors.black,
                             fontSize: 20,
@@ -370,8 +368,7 @@ class _TodayTotalState extends State<TodayTotal> {
                         ),
                         const SizedBox(width: 10,),
                         Text(
-                          "${Provider.of<PassData>(context, listen: false)
-                            .todaytotal} birr",
+                             total.todayTotal.toString()+ "birr",
                           style: const TextStyle(
                             color: Colors.black,
                             fontSize: 20,

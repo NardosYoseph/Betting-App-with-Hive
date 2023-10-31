@@ -16,15 +16,22 @@ class TotalAdapter extends TypeAdapter<Total> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Total()..recentTotal = fields[2] == null ? '' : fields[2] as String?;
+    return Total()
+      ..recentTotal = fields[2] == null ? '' : fields[2] as String?
+      ..todayTotal = fields[27] == null ? '' : fields[27] as String?
+      ..winTotal = fields[28] == null ? '' : fields[28] as String?;
   }
 
   @override
   void write(BinaryWriter writer, Total obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(3)
       ..writeByte(2)
-      ..write(obj.recentTotal);
+      ..write(obj.recentTotal)
+      ..writeByte(27)
+      ..write(obj.todayTotal)
+      ..writeByte(28)
+      ..write(obj.winTotal);
   }
 
   @override

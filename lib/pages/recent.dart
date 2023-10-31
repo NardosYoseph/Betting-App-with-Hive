@@ -19,27 +19,22 @@ class _RecentState extends State<Recent> {
  final _myBox = Hive.box('TicketsBox');
  //Ticket ticket = Ticket();
 List<TicketDetail> ticketdetail=[];
-Total recentTotal=Total();
+Total total=Total();
 
- int? trueTicketNum;
 @override
  void initState() {
 //_myBox.clear();
     // if this is the 1st time ever openin the app, then create default data
     if (_myBox.get("newTickets")==null) {
    ticketdetail = [TicketDetail(ticketID: Provider.of<PassData>(context,listen: false).ticketID.toString(),username:"", date: "-",box_num: "0", win_place: "-", deposit: "0", odd: "0", winned_money: "0")];
-   trueTicketNum=1;
-   //_myBox.put("newTicket",ticketdetail);
     } else {
       // there already exists data
   ticketdetail=_myBox.get("newTickets").cast<TicketDetail>() ;
-   trueTicketNum=ticketdetail.length;
-                                  print(ticketdetail.length);
     }
-    if (_myBox.get("newTotal")==null) {
-  recentTotal.recentTotal=0.toString();}
+    if (_myBox.get("recentTotal")==null) {
+  total.recentTotal=0.toString();}
   else{
- recentTotal.recentTotal= _myBox.get("newTotal");
+ total.recentTotal= _myBox.get("recentTotal");
 }
 
     super.initState();
@@ -366,7 +361,7 @@ Total recentTotal=Total();
                         ),
                         const SizedBox(width: 10,),
                         Text(
-                          recentTotal.recentTotal.toString()+ "birr",
+                          total.recentTotal.toString()+ "birr",
                           style: const TextStyle(
                             color: Colors.black,
                             fontSize: 20,
