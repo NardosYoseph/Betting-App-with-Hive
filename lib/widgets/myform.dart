@@ -286,8 +286,25 @@ Text(Provider.of<PassData>(context,listen: false).button_win_place.toString(),st
           )
             ],
           ),
-           
-        
+             const SizedBox(
+            height: 110,),
+          Container(
+            height: 75,
+            width: 150,
+            padding: EdgeInsets.all(10),
+            child: ElevatedButton(
+              onPressed: () {
+                Provider.of<PassData>(context,listen: false).setEndGameStatus(true); },
+            style: ElevatedButton.styleFrom(backgroundColor: Color.fromRGBO(131, 1, 21, 1),),
+      
+              child: const Center(
+      child:   Text("End Game",style: TextStyle(
+      color: Colors.white,
+      fontSize: 16,fontWeight: FontWeight.bold,
+      ),),
+        ),
+            ),
+          )
         ],
       ),
     );

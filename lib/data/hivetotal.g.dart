@@ -16,7 +16,7 @@ class TotalAdapter extends TypeAdapter<Total> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Total()..recentTotal = (fields[2] == null ? '' : fields[2] as double?) as double?;
+    return Total()..recentTotal = fields[2] == null ? '' : fields[2] as String?;
   }
 
   @override

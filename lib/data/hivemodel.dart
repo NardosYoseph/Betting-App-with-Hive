@@ -7,6 +7,9 @@ part 'hivemodel.g.dart';
 @HiveType(typeId:167,adapterName:"ticketAdapter")
 
 class TicketDetail extends HiveObject{
+     @HiveField(22,defaultValue: "")
+
+String ticketID;
    @HiveField(21,defaultValue: "")
 
 String username;
@@ -29,7 +32,7 @@ String box_num;
 
   String winned_money;
 
-TicketDetail({required this.username,required this.date,required this.box_num,required this.win_place,required this.deposit,required this.odd,required this.winned_money});
+TicketDetail({required this.ticketID,required this.username,required this.date,required this.box_num,required this.win_place,required this.deposit,required this.odd,required this.winned_money});
 }
 //@HiveType(typeId:169,adapterName:"allAdapter")
 

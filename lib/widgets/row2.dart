@@ -55,7 +55,7 @@ class _BoxRow2State extends State<BoxRow2> {
               child: Center(child: Text(widget.win_odd, style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.white),
             ))
            , onPressed: (){
-            Provider.of<PassData>(context,listen: false).win_place_button("Win", widget.win_odd, widget.boxNumber.toString(),true);
+            Provider.of<PassData>(context,listen: false).win_place_button("win", widget.win_odd, widget.boxNumber.toString(),true);
            },
             )),
           SizedBox(height: 20,),
@@ -68,7 +68,7 @@ class _BoxRow2State extends State<BoxRow2> {
               backgroundColor: Color.fromRGBO(64, 18, 139,0.8),
               child:Center(child: Text(widget.place_odd,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18,color: Colors.white),)),
       onPressed: (){
-             Provider.of<PassData>(context,listen: false).win_place_button("Place", widget.place_odd, widget.boxNumber.toString(),true);
+             Provider.of<PassData>(context,listen: false).win_place_button("place", widget.place_odd, widget.boxNumber.toString(),true);
       },
      
       ))],

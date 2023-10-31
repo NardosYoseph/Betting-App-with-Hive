@@ -4,6 +4,7 @@ import 'package:mydesktop2/pages/lgin_page.dart';
 import 'package:mydesktop2/pages/odd_page.dart';
 import 'package:mydesktop2/pages/recent.dart';
 import 'package:mydesktop2/pages/today_total_page.dart';
+import 'package:mydesktop2/pages/totalWinPage.dart';
 
 class SiderMenu extends StatelessWidget {
   const SiderMenu({super.key});
@@ -67,7 +68,7 @@ class SiderMenu extends StatelessWidget {
           ),
           
           ListTile(
-            leading: Icon(Icons.logout,color: Colors.white,),
+            leading: Icon(Icons.list,color: Colors.white,),
             title: Text("Recent tickets",overflow: TextOverflow.ellipsis,style: TextStyle(color: Colors.white)),
             onTap: (){
                Navigator.push(
@@ -78,7 +79,33 @@ class SiderMenu extends StatelessWidget {
                         );
             },
           ),
-        SizedBox(height: 300,),
+           ListTile(
+            leading: Icon(Icons.list,color: Colors.white,),
+            title: Text("Win Tickets",overflow: TextOverflow.ellipsis,style: TextStyle(color: Colors.white)),
+            onTap: (){
+               Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TotalWin()
+                                  ),
+                                  
+                        );
+            },
+          ),
+            ListTile(
+            leading: Icon(Icons.list_alt,color: Colors.white,),
+            title: Text("Net Income",overflow: TextOverflow.ellipsis,style: TextStyle(color: Colors.white)),
+            onTap: (){
+               Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TotalWin()
+                                  ),
+                                  
+                        );
+            },
+          ),
+        SizedBox(height: 200,),
          Container(
             height: 40,
             width: 110,

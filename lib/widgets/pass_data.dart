@@ -13,7 +13,9 @@ class PassData extends ChangeNotifier{
    String? fixed_winned_money;
    int? Mydeposit;
    double? netdeposit;
-
+bool endGame=false;
+bool newGame=false;
+ String errorMessage="";
  int? boxNum;
   double? odd;
   String? win_place;
@@ -23,12 +25,17 @@ class PassData extends ChangeNotifier{
   String? button_win_place="win/place";
   String? button_odd;
   String? button_number="0";
+  String ticketID=0.toString();
 
-  final box = Hive.box('TicketDetailBox');
+  final box = Hive.box('TicketsBox');
 //Ticket ticket=Ticket();
   // final _myBox = Hive.box('mybox');
 List<TicketDetail> ticketdetail= [];
 List<TicketDetail> todayTicket= [];
+List<TicketDetail> winTicket= [];
+List<TicketDetail> place1Ticket= [];
+List<TicketDetail> place2Ticket= [];
+List<TicketDetail> totalWinTicket= [];
 
 Total recentTotal=Total();
 double? newTotal;
@@ -119,37 +126,50 @@ fixed_winned_money = winned_money.toString().replaceAll(regex, '');
 
 
 void addTicket(String date,String box_num,String win_place,String deposit,String odd,String winned_money,String userName,){
-     if (box.get("newTickets")==null) {
-   ticketdetail = [TicketDetail(username: userName,date: date,box_num: "", win_place: "", deposit: "", odd: "", winned_money: "")] ;
+     if (box.get("newTickets")==null) {//all ticket
+   ticketdetail = [TicketDetail(ticketID: ticketID,username: userName,date: date,box_num: "", win_place: "", deposit: "", odd: "", winned_money: "")] ;
    box.put("newTickets",ticketdetail ) as List<TicketDetail>;
     }
- 
-   ticketdetail= box.get("newTickets").cast<TicketDetail>();
-    ticketdetail.add(TicketDetail(username: userName,date: date,box_num: box_num, 
+   
+  ticketdetail= box.get("newTickets").cast<TicketDetail>();
+    ticketdetail.add(TicketDetail(ticketID: ticketID,username: userName,date: date,box_num: box_num, 
   win_place: win_place, deposit: deposit, odd: odd , winned_money: winned_money ));
 box.put("newTickets", ticketdetail  );
-
+//today ticket
+ 
 day=date;
-
- todayTicket.add(TicketDetail(username: userName,date: date,box_num: box_num, 
-  win_place: win_place, deposit: deposit, odd: odd , winned_money: winned_money ));
+ //String today= "${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().day}";
+ if (box.get("todayTicket")==null) {
+   todayTicket = [TicketDetail(ticketID: ticketID,username: userName,date: date,box_num: "", win_place: "", deposit: "", odd: "", winned_money: "")] ;
+   box.put("todayTicket",todayTicket ) as List<TicketDetail>;
+    }
+// todayTicket=box.get("todayTicket").cast<TicketDetail>();
+//   for(int i=0;i<=ticketdetail.length-1;i++){
+//   if(ticketdetail[i].date == today){
+//  todayTicket.add(TicketDetail(ticketID:ticketID,username:ticketdetail[i].username ,date: ticketdetail[i].date,box_num:ticketdetail[i].box_num, 
+//   win_place: ticketdetail[i].win_place, deposit: ticketdetail[i].deposit, odd: ticketdetail[i].odd , winned_money: ticketdetail[i].winned_money ));
+//}
+todayTicket=ticketdetail.where((ticket) => ticket.date.contains("${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().day}")).toList();
+ 
+box.put("todayTicket", todayTicket);
+//  }
 
 
   recentTotal.recentTotal=box.get("newTotal") ; 
  if (box.get("newTotal")==null) {
-recentTotal.recentTotal=0 ;
+recentTotal.recentTotal="0" ;
   box.put("newTotal", recentTotal.recentTotal);
 }
 
   
    // newTotal=recentTotal as Total;
    if(recentTotal.recentTotal!=null){
-    recentTotal.recentTotal= (recentTotal.recentTotal!  + double.parse(ticketdetail[ticketdetail.length-1].deposit)) ;
+    recentTotal.recentTotal= (double.parse(recentTotal.recentTotal!)  + double.parse(ticketdetail[ticketdetail.length-1].deposit)).toString();
     //recentTotal=newTotal as Total;
  }
  else{
     
-   recentTotal.recentTotal=0   ;
+   recentTotal.recentTotal="0"   ;
  }
   if(ticketdetail.isNotEmpty){
     todaytotal= todaytotal+double.parse(ticketdetail[ticketdetail.length-1].deposit);
@@ -184,5 +204,85 @@ button_odd=odd;
 button_win_place=win_place;
 notifyListeners();
 }
+void addid(int num){
+  ticketID=(int.parse(ticketID)+num).toString();
+}
+void setEndGameStatus(bool status){
+  endGame=status;
+  notifyListeners();
+}void setNewGameStatus(bool status){
+  newGame=status;
+  notifyListeners();
+}
+void filterWin(int? boxnum1,int? boxnum2,int? boxnum3, String ticketId){
+  for(int i=0;i<ticketdetail.length;i++){
+    
+    if(ticketdetail[i].box_num==boxnum1.toString() && ticketdetail[i].ticketID==ticketId &&ticketdetail[i].win_place=="win"){
+      winTicket.add(ticketdetail[i]);
+    }
+
+  }
+
+for(int i=0;i<ticketdetail.length;i++){
+    
+    if(ticketdetail[i].box_num==boxnum2.toString() && ticketdetail[i].ticketID==ticketId &&ticketdetail[i].win_place=="place"){
+      place1Ticket.add(ticketdetail[i]);
+    }
+
+  }
+
+for(int i=0;i<ticketdetail.length;i++){
+    
+    if(ticketdetail[i].box_num==boxnum3.toString() && ticketdetail[i].ticketID==ticketId &&ticketdetail[i].win_place=="place"){
+      place2Ticket.add(ticketdetail[i]);
+    }
+
+  }
+
+for(int i=0;i<winTicket.length;i++){
+  if(winTicket[i].box_num==boxnum1.toString() && winTicket[i].ticketID==ticketId &&winTicket[i].win_place=="win"){
+        totalWinTicket.add(winTicket[i]);
+
+    }
+  }for(int i=0;i<place1Ticket.length;i++){
+    if(place1Ticket[i].box_num==boxnum2.toString() && place1Ticket[i].ticketID==ticketId &&place1Ticket[i].win_place=="place"){
+           totalWinTicket.add(place1Ticket[i]);
+
+    }
+  }for(int i=0;i<place2Ticket.length;i++){
+    if(place2Ticket[i].box_num==boxnum3.toString() && place2Ticket[i].ticketID==ticketId &&place2Ticket[i].win_place=="place"){
+               totalWinTicket.add(place2Ticket[i]);
+
+
+    }
+  }
+
+box.put("totalwin", totalWinTicket);
+//  winTicket.clear();
+// place1Ticket.clear();
+// place2Ticket.clear();
+// totalWinTicket.clear();
+// box.delete("totalwin");
+
+}
+
  
+
+ 
+ void totalWin(){
+
+  for(int i=0;i<winTicket.length;i++){
+     totalWinTicket.add(winTicket[i]);
+  }for(int i=0;i<place1Ticket.length;i++){
+     totalWinTicket.add(place1Ticket[i]);
+  }for(int i=0;i<place2Ticket.length;i++){
+     totalWinTicket.add(place2Ticket[i]);
+  }
+
+box.put("totalwin", totalWinTicket);
+
+ }
+ void errormessage(String errormessage){
+  errorMessage=errormessage;
+ }
 }

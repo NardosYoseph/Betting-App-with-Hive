@@ -8,14 +8,14 @@ import 'package:provider/provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:marquee_widget/marquee_widget.dart';
 
-class Recent extends StatefulWidget {
-  const Recent({super.key});
+class TotalWin extends StatefulWidget {
+  const TotalWin({super.key});
 
   @override
-  State<Recent> createState() => _RecentState();
+  State<TotalWin> createState() => _TotalWinState();
 }
 
-class _RecentState extends State<Recent> {
+class _TotalWinState extends State<TotalWin> {
  final _myBox = Hive.box('TicketsBox');
  //Ticket ticket = Ticket();
 List<TicketDetail> ticketdetail=[];
@@ -26,13 +26,13 @@ Total recentTotal=Total();
  void initState() {
 //_myBox.clear();
     // if this is the 1st time ever openin the app, then create default data
-    if (_myBox.get("newTickets")==null) {
+    if (_myBox.get("totalwin")==null) {
    ticketdetail = [TicketDetail(ticketID: Provider.of<PassData>(context,listen: false).ticketID.toString(),username:"", date: "-",box_num: "0", win_place: "-", deposit: "0", odd: "0", winned_money: "0")];
    trueTicketNum=1;
    //_myBox.put("newTicket",ticketdetail);
     } else {
       // there already exists data
-  ticketdetail=_myBox.get("newTickets").cast<TicketDetail>() ;
+  ticketdetail=_myBox.get("totalwin").cast<TicketDetail>() ;
    trueTicketNum=ticketdetail.length;
                                   print(ticketdetail.length);
     }

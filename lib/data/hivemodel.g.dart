@@ -17,6 +17,7 @@ class ticketAdapter extends TypeAdapter<TicketDetail> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TicketDetail(
+      ticketID: fields[22] == null ? '' : fields[22] as String,
       username: fields[21] == null ? '' : fields[21] as String,
       date: fields[20] == null ? '' : fields[20] as String,
       box_num: fields[3] == null ? '' : fields[3] as String,
@@ -30,7 +31,9 @@ class ticketAdapter extends TypeAdapter<TicketDetail> {
   @override
   void write(BinaryWriter writer, TicketDetail obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
+      ..writeByte(22)
+      ..write(obj.ticketID)
       ..writeByte(21)
       ..write(obj.username)
       ..writeByte(20)

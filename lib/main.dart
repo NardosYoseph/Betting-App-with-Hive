@@ -19,7 +19,7 @@ void main() async{
 Hive.registerAdapter<TicketDetail>(ticketAdapter());
  Hive.registerAdapter<odds>(winPlaceAdapter());
  Hive.registerAdapter<Total>(TotalAdapter());
- await Hive.openBox('TicketDetailBox');
+ await Hive.openBox('TicketsBox');
  
 
 

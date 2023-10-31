@@ -11,6 +11,7 @@ import 'package:mydesktop2/widgets/pass_data.dart';
 import 'package:mydesktop2/widgets/row.dart';
 import 'package:mydesktop2/widgets/row2.dart';
 import 'package:mydesktop2/widgets/sider_menu.dart';
+import 'package:mydesktop2/widgets/winnerForm.dart';
 import 'package:provider/provider.dart';
 import '../widgets/myform.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -26,7 +27,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
- final _myBox = Hive.box('TicketDetailBox');
+ final _myBox = Hive.box('TicketsBox');
  //Ticket ticket = Ticket();
  late odds win_place_odd;
   @override
@@ -201,8 +202,9 @@ class _HomePageState extends State<HomePage> {
                   SizedBox(height: 15,),
                       
       SizedBox(height: 100,),
+      
 
-                  Center(child: MyCustomForm()),
+                  Center(child: Provider.of<PassData>(context,listen: true).endGame==true ? WinnerForm(): MyCustomForm()),
                 ],
               ))
               ])

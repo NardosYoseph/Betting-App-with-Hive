@@ -6,5 +6,5 @@ part 'hivetotal.g.dart';
 
 class Total extends HiveObject{
    @HiveField(2,defaultValue: "")
-  double? recentTotal;
+  String? recentTotal;
 }

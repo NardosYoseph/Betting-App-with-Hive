@@ -13,9 +13,9 @@ class TodayTotal extends StatefulWidget {
   @override
   State<TodayTotal> createState() => _TodayTotalState();
 }
- final _myBox = Hive.box('TicketDetailBox');
-List<TicketDetail> Providerticketdetail=[];
+ final _myBox = Hive.box('TicketsBox');
 List<TicketDetail> ticketdetail=[];
+List<TicketDetail> todayTicket= [];
 
  int? trueTicketNum;
 
@@ -26,10 +26,8 @@ class _TodayTotalState extends State<TodayTotal> {
 @override
  void initState() {
 
-Providerticketdetail=Provider.of<PassData>(context,listen:false)
-                                  .todayTicket;
-    if (_myBox.get("newTickets")==null) {
-   ticketdetail = [TicketDetail(username: "" ,date: "-",box_num: "0", win_place: "-", deposit: "0", odd: "0", winned_money: "0")];
+    if (_myBox.get("todayTicket")==null) {
+   ticketdetail = [TicketDetail(ticketID: Provider.of<PassData>(context,listen: false).ticketID.toString(),username: "" ,date: "-",box_num: "0", win_place: "-", deposit: "0", odd: "0", winned_money: "0")];
    trueTicketNum=0;
 
    //_myBox.get("newTickets");
@@ -37,20 +35,11 @@ Providerticketdetail=Provider.of<PassData>(context,listen:false)
    //_myBox.put("newTicket",ticketdetail);
     } else {
 //_myBox.clear();
-
       // there already exists data
-  ticketdetail=_myBox.get("newTickets").cast<TicketDetail>() ;
-  
-String today= "${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().day}";
+  ticketdetail=_myBox.get("todayTicket").cast<TicketDetail>() ;
+  todayTicket=ticketdetail.where((ticket) => ticket.date.contains("${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().day}")).toList();
+ 
 
-
-  for(int i=0;i<=ticketdetail.length-1;i++){
-  if(ticketdetail[i].date == today){
- Providerticketdetail.add(TicketDetail(username:ticketdetail[i].username ,date: ticketdetail[i].date,box_num:ticketdetail[i].box_num, 
-  win_place: ticketdetail[i].win_place, deposit: ticketdetail[i].deposit, odd: ticketdetail[i].odd , winned_money: ticketdetail[i].winned_money ));
-}
-}
-   trueTicketNum=ticketdetail.length;
   
     }
     
@@ -224,8 +213,9 @@ String today= "${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().d
                       width: 900,
                    //   color: Color.fromRGBO(236, 176, 236, 1),
                       child: ListView.builder(
+                        
                         scrollDirection: Axis.vertical,
-                        itemCount:Providerticketdetail
+                        itemCount:ticketdetail
                             .length,
                         itemBuilder: (context, index) => SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
@@ -234,7 +224,7 @@ String today= "${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().d
                               SizedBox(
                                 width: 90,
                                 child: Text(
-                             Providerticketdetail[index].username,
+                             ticketdetail[index].username,
                                   style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 16,
@@ -247,7 +237,7 @@ String today= "${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().d
                                SizedBox(
                                 width: 90,
                                 child: Text(
-                                Providerticketdetail[index].date,
+                                ticketdetail[index].date,
                                   style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 16,
@@ -260,7 +250,7 @@ String today= "${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().d
                               SizedBox(
                                 width: 20,
                                 child: Text(
-                                 Providerticketdetail[index]
+                                 ticketdetail[index]
                                       .box_num,
                                   style: const TextStyle(
                                     color: Colors.black,
@@ -274,7 +264,7 @@ String today= "${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().d
                               SizedBox(
                                 width: 40,
                                 child: Text(
-                                Providerticketdetail[index]
+                                ticketdetail[index]
                                       .win_place,
                                   style: const TextStyle(
                                     color: Colors.black,
@@ -288,7 +278,7 @@ String today= "${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().d
                               SizedBox(
                                 width: 70,
                                 child: Text(
-                               Providerticketdetail[index]
+                               ticketdetail[index]
                                       .odd,
                                   style: const TextStyle(
                                     color: Colors.black,
@@ -302,7 +292,7 @@ String today= "${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().d
                               SizedBox(
                                 width: 70,
                                 child: Text(
-                                  "${Providerticketdetail[index]
+                                  "${ticketdetail[index]
                                           .deposit} birr",
                                   style: const TextStyle(
                                     color: Colors.black,
@@ -316,7 +306,7 @@ String today= "${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().d
                               SizedBox(
                                 width: 150,
                                 child: Text(
-                                 "${Providerticketdetail[index]
+                                 "${ticketdetail[index]
                                           .winned_money} birr",
                                   style: const TextStyle(
                                     color: Colors.black,
@@ -358,7 +348,7 @@ String today= "${DateTime.now().year}/${DateTime.now().month}/${DateTime.now().d
                         ),
                         const SizedBox(width: 10,),
                         Text(
-                          (Providerticketdetail
+                          (ticketdetail
                             .length).toString(),
                           style: const TextStyle(
                             color: Colors.black,
